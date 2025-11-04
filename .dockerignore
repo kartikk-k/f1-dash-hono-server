@@ -3,6 +3,7 @@
 
 dash/
 target/
+node_modules/
 
 .dockerignore
 .env
@@ -13,8 +14,12 @@ CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 LICENSE
 README.md
+API.md
 
 compose.env
 compose.env.example
 compose.yaml
-docker-bake.hcl
+
+*.log
+.bun
+bun.lockb

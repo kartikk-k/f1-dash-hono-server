@@ -5,8 +5,22 @@
 .env
 compose.env
 
+# dependencies
+node_modules
+**/node_modules
+
 # compiled
 **/target
+dist
+build
 
 # data
 *.data.*
+
+# logs
+*.log
+logs
+
+# bun
+.bun
+bun.lockb
