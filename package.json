@@ -9,6 +9,7 @@
     "dev:live": "bun run --watch src/services/live/index.ts",
     "dev:analytics": "bun run --watch src/services/analytics/index.ts",
     "dev:importer": "bun run --watch src/services/importer/index.ts",
+    "simulator": "bun run src/simulator/index.ts",
     "start": "bun run src/index.ts",
     "start:api": "bun run src/services/api/index.ts",
     "start:live": "bun run src/services/live/index.ts",
