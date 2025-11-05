@@ -1,29 +1,29 @@
 services:
-  live:
-    image: ghcr.io/slowlydev/f1-dash-live:latest
+  backend:
+    image: ghcr.io/slowlydev/f1-dash-backend:latest
     build:
       context: .
-      target: live
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - 4000:4000
+      - 4000:4000  # Live Service
+      - 4001:4001  # API Service
+      - 4002:4002  # Analytics Service
     environment:
       - ORIGIN=http://localhost:3000
-      - LIVE_ADDRESS=0.0.0.0:4000
-      - RUST_LOG=live=debug,client=debug
-
-  api:
-    image: ghcr.io/slowlydev/f1-dash-api:latest
-    build:
-      context: .
-      target: api
-    restart: unless-stopped
-    ports:
-      - 4001:4001
-    environment:
-      - ORIGIN=http://localhost:3000
-      - API_ADDRESS=0.0.0.0:4001
-      - RUST_LOG=api=debug
+      - LIVE_ADDRESS=0.0.0.0
+      - LIVE_PORT=4000
+      - API_ADDRESS=0.0.0.0
+      - API_PORT=4001
+      - ANALYTICS_ADDRESS=0.0.0.0
+      - ANALYTICS_PORT=4002
+      - LOG_LEVEL=debug
+      - F1_SIGNALR_URL=https://livetiming.formula1.com/signalr
+      - F1_ICAL_URL=https://ics.ecal.com/ecal-sub/660897ca63f9ca0008bcbea6/Formula%201.ics
+      - SCHEDULE_CACHE_TTL=1800
+      - DATABASE_URL=postgres://postgres:password@timescaledb:5432/postgres
+    depends_on:
+      - timescaledb
 
   frontend:
     image: ghcr.io/slowlydev/f1-dash:latest
@@ -33,12 +33,10 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - api
-      - live
+      - backend
     environment:
       - NEXT_PUBLIC_LIVE_URL=http://localhost:4000
-      - API_URL=http://api:4001
-
+      - API_URL=http://backend:4001
       - DISABLE_IFRAME=1
 
   timescaledb:
@@ -46,23 +44,10 @@ services:
     ports:
       - 5432:5432
     restart: unless-stopped
+    volumes:
+      - timescale-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=password
 
-  importer:
-    image: ghcr.io/slowlydev/f1-dash-importer:latest
-    build:
-      context: .
-      target: importer
-    environment:
-      - DATABASE_URL=postgres://postgres:password@timescaledb:5432/postgres
-
-  analytics:
-    image: ghcr.io/slowlydev/f1-dash-analytics:latest
-    build:
-      context: .
-      target: analytics
-    environment:
-      - ORIGIN=http://localhost:3000
-      - ANALYTICS_ADDRESS=0.0.0.0:4002
-      - RUST_LOG=analytics=debug
+volumes:
+  timescale-data:

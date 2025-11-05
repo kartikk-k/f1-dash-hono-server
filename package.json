@@ -1,0 +1,38 @@
+{
+  "name": "f1-dash-hono-server",
+  "version": "2.0.0",
+  "description": "F1 Dashboard Backend API - Migrated from Rust to Hono.js",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "dev:api": "bun run --watch src/services/api/index.ts",
+    "dev:live": "bun run --watch src/services/live/index.ts",
+    "dev:analytics": "bun run --watch src/services/analytics/index.ts",
+    "dev:importer": "bun run --watch src/services/importer/index.ts",
+    "simulator": "bun run src/simulator/index.ts",
+    "start": "bun run src/index.ts",
+    "start:api": "bun run src/services/api/index.ts",
+    "start:live": "bun run src/services/live/index.ts",
+    "start:analytics": "bun run src/services/analytics/index.ts",
+    "start:importer": "bun run src/services/importer/index.ts",
+    "build": "echo 'Bun does not require build step'",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.6.14",
+    "pg": "^8.13.1",
+    "zod": "^3.24.1",
+    "pino": "^9.5.0",
+    "pino-pretty": "^13.0.0",
+    "ical.js": "^2.1.0",
+    "node-cache": "^5.1.2",
+    "@microsoft/signalr": "^8.0.7",
+    "eventsource": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.12",
+    "@types/pg": "^8.11.10",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  }
+}
