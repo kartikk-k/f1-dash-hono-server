@@ -15,7 +15,7 @@ dist
 build
 
 # data
-*.data.*
+# *.data.*
 
 # logs
 *.log
